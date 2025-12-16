@@ -1,0 +1,4 @@
+storage_account_name = "stfabricstatedev2026"
+container_name       = "tfstate"
+key                  = "fabric/dev/terraform.tfstate"
+resource_group_name  = "rg-terraform-state-dev"

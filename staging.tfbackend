@@ -1,0 +1,4 @@
+storage_account_name = "stfabricstatestaging"
+container_name       = "tfstate"
+key                  = "fabric/staging/terraform.tfstate"
+resource_group_name  = "rg-terraform-state-staging"

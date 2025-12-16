@@ -1,0 +1,34 @@
+# Ignore Terraform state and backup files
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+.terraform/
+.terraform.lock.hcl
+
+# Ignore sensitive or local config
+*.tfvars
+*.tfvars.json
+
+# Ignore editor and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Ignore plan output
+*.plan
+
+# Ignore Python cache (if any scripts)
+__pycache__/
+*.pyc
+
+# Ignore shell history
+*.history
+
+# Ignore log files
+*.log
