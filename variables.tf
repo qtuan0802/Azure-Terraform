@@ -1,3 +1,8 @@
+variable "enable_app_insights" {
+  description = "Enable Application Insights for java_app module"
+  type        = bool
+  default     = true
+}
 # Environment Configuration
 variable "environment" {
   description = "Environment name (dev, uat, prod)"

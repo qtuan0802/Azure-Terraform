@@ -38,14 +38,16 @@ output "key_vault_id" {
   value       = data.azurerm_key_vault.shared.id
 }
 
+
 output "application_insights_instrumentation_key" {
   description = "Instrumentation key of Application Insights"
-  value       = azurerm_application_insights.main.instrumentation_key
+  value       = length(azurerm_application_insights.main) > 0 ? azurerm_application_insights.main[0].instrumentation_key : null
   sensitive   = true
 }
 
+
 output "application_insights_connection_string" {
   description = "Connection string of Application Insights"
-  value       = azurerm_application_insights.main.connection_string
+  value       = length(azurerm_application_insights.main) > 0 ? azurerm_application_insights.main[0].connection_string : null
   sensitive   = true
 }

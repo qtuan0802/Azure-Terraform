@@ -36,11 +36,21 @@ output "action_group_name" {
 }
 
 output "dashboard_id" {
-  description = "ID of the Azure Dashboard"
-  value       = var.create_dashboard ? azurerm_dashboard.fabric_dashboard[0].id : null
+  description = "ID of the Azure Portal dashboard."
+  value       = var.create_dashboard ? azurerm_portal_dashboard.fabric_dashboard[0].id : null
 }
 
 output "dashboard_url" {
-  description = "URL of the Azure Dashboard"
-  value       = var.create_dashboard ? "https://portal.azure.com/#dashboard/private${azurerm_dashboard.fabric_dashboard[0].id}" : null
+  description = "URL of the Azure Portal dashboard."
+  value       = var.create_dashboard ? "https://portal.azure.com/#dashboard/private${azurerm_portal_dashboard.fabric_dashboard[0].id}" : null
 }
+
+// output "dashboard_id" {
+//   description = "ID of the Azure Portal dashboard."
+//   value       = var.create_dashboard ? azurerm_dashboard.fabric_dashboard[0].id : null
+// }
+
+// output "dashboard_url" {
+//   description = "URL of the Azure Portal dashboard."
+//   value       = var.create_dashboard ? "https://portal.azure.com/#dashboard/private${azurerm_dashboard.fabric_dashboard[0].id}" : null
+// }

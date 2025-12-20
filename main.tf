@@ -47,10 +47,24 @@ module "data_factory" {
 }
 
 # Key Vault for secrets management
-module "key_vault" {
+# module "key_vault" {
+#   source = "./modules/key_vault"
+
+#   name                = "kv-fabric-${var.environment}-${random_string.suffix.result}"
+#   resource_group_name = azurerm_resource_group.fabric.name
+#   location            = azurerm_resource_group.fabric.location
+#   tenant_id           = data.azurerm_client_config.current.tenant_id
+
+#   # Access policies
+#   access_policies = var.key_vault_access_policies
+
+#   tags = var.tags
+# }
+
+module "key_vault_sapsfbatch" {
   source = "./modules/key_vault"
 
-  name                = "kv-fabric-${var.environment}-${random_string.suffix.result}"
+  name                = "sapsfbatch-${var.environment}-${random_string.suffix.result}"
   resource_group_name = azurerm_resource_group.fabric.name
   location            = azurerm_resource_group.fabric.location
   tenant_id           = data.azurerm_client_config.current.tenant_id
@@ -107,29 +121,31 @@ module "monitoring" {
 module "java_app" {
   source = "./modules/java_app"
 
-  resource_group_name = azurerm_resource_group.fabric.name
-  location            = azurerm_resource_group.fabric.location
-  tenant_id           = data.azurerm_client_config.current.tenant_id
-  suffix              = random_string.suffix.result
+  resource_group_name  = azurerm_resource_group.fabric.name
+  location             = azurerm_resource_group.fabric.location
+  tenant_id            = data.azurerm_client_config.current.tenant_id
+  suffix               = random_string.suffix.result
   deployment_object_id = data.azurerm_client_config.current.object_id
 
-  environment         = var.environment
-  app_service_sku     = var.app_service_sku != null ? var.app_service_sku : "B1"
-  java_version        = var.java_version != null ? var.java_version : "17-java17"
-  health_check_path   = var.health_check_path != null ? var.health_check_path : "/health"
+  environment       = var.environment
+  app_service_sku   = var.app_service_sku != null ? var.app_service_sku : "B1"
+  java_version      = var.java_version != null ? var.java_version : "17-java17"
+  health_check_path = var.health_check_path != null ? var.health_check_path : "/health"
 
-  key_vault_network_access = var.key_vault_network_access != null ? var.key_vault_network_access : "Allow"
-  allowed_ip_addresses     = var.allowed_ip_addresses != null ? var.allowed_ip_addresses : []
+  key_vault_network_access   = var.key_vault_network_access != null ? var.key_vault_network_access : "Allow"
+  allowed_ip_addresses       = var.allowed_ip_addresses != null ? var.allowed_ip_addresses : []
   additional_key_vault_users = var.additional_key_vault_users != null ? var.additional_key_vault_users : []
 
   additional_app_settings = var.additional_app_settings != null ? var.additional_app_settings : {}
   key_vault_references    = var.key_vault_references != null ? var.key_vault_references : {}
   sample_secrets          = var.sample_secrets != null ? var.sample_secrets : {}
 
-  key_vault_name           = module.key_vault.key_vault_name
+  key_vault_name           = module.key_vault_sapsfbatch.key_vault_name
   key_vault_resource_group = azurerm_resource_group.fabric.name
 
   tags = var.tags
+
+  enable_app_insights = var.enable_app_insights
 }
 
 # Random string for unique naming

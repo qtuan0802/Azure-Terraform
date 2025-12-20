@@ -143,7 +143,7 @@ resource "azurerm_monitor_metric_alert" "datafactory_failed_runs" {
 }
 
 # Dashboard for Fabric Monitoring
-resource "azurerm_dashboard" "fabric_dashboard" {
+resource "azurerm_portal_dashboard" "fabric_dashboard" {
   count               = var.create_dashboard ? 1 : 0
   name                = "fabric-dashboard-${var.environment}"
   resource_group_name = var.resource_group_name

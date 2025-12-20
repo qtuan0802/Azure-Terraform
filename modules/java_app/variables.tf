@@ -1,3 +1,8 @@
+variable "enable_app_insights" {
+  description = "Enable Application Insights"
+  type        = bool
+  default     = true
+}
 # Shared Key Vault from root module
 variable "key_vault_name" {
   description = "Name of the shared Key Vault to use for secrets and references"
@@ -50,7 +55,7 @@ variable "app_service_sku" {
   type        = string
   default     = "B1"
   validation {
-    condition = can(regex("^(F1|D1|B[1-3]|S[1-3]|P[1-3]V[2-3]|P[1-3]mv3|I[1-6]v2)$", var.app_service_sku))
+    condition     = can(regex("^(F1|D1|B[1-3]|S[1-3]|P[1-3]V[2-3]|P[1-3]mv3|I[1-6]v2)$", var.app_service_sku))
     error_message = "Invalid App Service SKU."
   }
 }
@@ -60,7 +65,7 @@ variable "java_version" {
   type        = string
   default     = "17-java17"
   validation {
-    condition = contains(["8-jre8", "11-java11", "17-java17", "21-java21"], var.java_version)
+    condition     = contains(["8-jre8", "11-java11", "17-java17", "21-java21"], var.java_version)
     error_message = "Java version must be one of: 8-jre8, 11-java11, 17-java17, 21-java21."
   }
 }
