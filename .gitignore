@@ -6,10 +6,6 @@ crash.log
 .terraform/
 .terraform.lock.hcl
 
-# Ignore sensitive or local config
-*.tfvars
-*.tfvars.json
-
 # Ignore editor and OS files
 .vscode/
 .idea/
