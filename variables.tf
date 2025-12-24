@@ -1,3 +1,9 @@
+# Managed Identity
+variable "managed_identity_names" {
+  description = "Danh sách tên các user-assigned managed identity cần tạo cho các service khác nhau. Định nghĩa qua tfvars cho từng môi trường."
+  type        = list(string)
+  default     = []
+}
 variable "enable_app_insights" {
   description = "Enable Application Insights for java_app module"
   type        = bool

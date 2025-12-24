@@ -34,9 +34,10 @@ resource "azurerm_linux_web_app" "main" {
   location            = var.location
   service_plan_id     = azurerm_service_plan.main.id
 
-  # Enable system-assigned managed identity
+  # Enable managed identity (user-assigned nếu có, không thì system-assigned)
   identity {
-    type = "SystemAssigned"
+    type         = var.user_assigned_identity_id != null ? "UserAssigned" : "SystemAssigned"
+    identity_ids = var.user_assigned_identity_id != null ? [var.user_assigned_identity_id] : null
   }
 
   site_config {
@@ -91,12 +92,3 @@ resource "azurerm_linux_web_app" "main" {
   tags = var.tags
 }
 
-# Sample Key Vault secrets
-resource "azurerm_key_vault_secret" "sample_secrets" {
-  for_each     = var.sample_secrets
-  name         = each.key
-  value        = each.value
-  key_vault_id = data.azurerm_key_vault.shared.id
-
-  tags = var.tags
-}

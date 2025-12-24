@@ -1,3 +1,19 @@
+# Managed Identity (user-assigned)
+variable "user_assigned_identity_id" {
+  description = "Resource ID của user-assigned managed identity để attach vào app service"
+  type        = string
+  default     = null
+}
+variable "user_assigned_identity_principal_id" {
+  description = "Principal ID của user-assigned managed identity"
+  type        = string
+  default     = null
+}
+variable "user_assigned_identity_client_id" {
+  description = "Client ID của user-assigned managed identity"
+  type        = string
+  default     = null
+}
 variable "enable_app_insights" {
   description = "Enable Application Insights"
   type        = bool
@@ -117,11 +133,6 @@ variable "key_vault_references" {
   default     = {}
 }
 
-variable "sample_secrets" {
-  description = "Sample secrets to create in Key Vault"
-  type        = map(string)
-  default     = {}
-}
 
 # Tags
 variable "tags" {

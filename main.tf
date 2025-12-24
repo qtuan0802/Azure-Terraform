@@ -1,3 +1,12 @@
+# Managed Identity module
+module "managed_identity" {
+  source              = "./modules/managed_identity"
+  for_each            = toset(var.managed_identity_names)
+  name                = each.value
+  resource_group_name = azurerm_resource_group.fabric.name
+  location            = azurerm_resource_group.fabric.location
+  tags                = var.tags
+}
 terraform {
   required_version = ">= 1.0"
   required_providers {
@@ -138,12 +147,16 @@ module "java_app" {
 
   additional_app_settings = var.additional_app_settings != null ? var.additional_app_settings : {}
   key_vault_references    = var.key_vault_references != null ? var.key_vault_references : {}
-  sample_secrets          = var.sample_secrets != null ? var.sample_secrets : {}
 
   key_vault_name           = module.key_vault_sapsfbatch.key_vault_name
   key_vault_resource_group = azurerm_resource_group.fabric.name
 
   tags = var.tags
+
+  # Managed Identity outputs (lấy identity đầu tiên trong danh sách)
+  user_assigned_identity_id           = module.managed_identity[var.managed_identity_names[0]].id
+  user_assigned_identity_principal_id = module.managed_identity[var.managed_identity_names[0]].principal_id
+  user_assigned_identity_client_id    = module.managed_identity[var.managed_identity_names[0]].client_id
 
   enable_app_insights = var.enable_app_insights
 }
