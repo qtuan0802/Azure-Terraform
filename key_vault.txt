@@ -1,0 +1,32 @@
+Naming Convention Explanation
+Format: sapsfbatch-sit-<category>-<name>
+
+Benefits: - ✅ Shorter and more readable (avg. 30 chars vs 50+ chars) - ✅ Follows Azure best practices - ✅ Groups secrets by category (sapsf, auth-basic, auth-oauth) - ✅ Easy to filter and search in Azure Portal - ✅ Consistent with Azure resource naming patterns - ✅ No redundancy (sapsf not repeated)
+
+Required Key Vault Secrets
+#	Variable Name	Key Vault Secret Name	Description	Example Value
+1	sapsf-base-url	sapsfbatch-sit-sapsf-baseurl	SAP SuccessFactors API base URL for the SIT environment	https://apisalesdemo2.successfactors.com
+2	sapsf-auth-type	sapsfbatch-sit-auth-type	Authentication type to use with SAP SuccessFactors	basic or oauth2
+3	sapsf-basic-username	sapsfbatch-sit-auth-basic-username	SAP SuccessFactors Basic Auth username (used if auth-type=basic)	svc_fabric_api@testcompany
+4	sapsf-basic-password	sapsfbatch-sit-auth-basic-password	SAP SuccessFactors Basic Auth password (used if auth-type=basic)	P@ssw0rd123!
+5	sapsf-basic-company-id	sapsfbatch-sit-auth-basic-companyid	SAP SuccessFactors Company ID for Basic Auth	SFPART123456
+6	sapsf-oauth-company-id	sapsfbatch-sit-auth-oauth-companyid	SAP SuccessFactors Company ID for OAuth2 (used if auth-type=oauth2)	SFPART123456
+7	sapsf-oauth-client-id	sapsfbatch-sit-auth-oauth-clientid	OAuth2 Client ID from SAP SF "Manage OAuth2 Client Applications"	a1b2c3d4-e5f6-7890-abcd-ef1234567890
+8	sapsf-oauth-private-key	sapsfbatch-sit-auth-oauth-privatekey	Private key from X.509 certificate (full PEM format). Can be encrypted or unencrypted. If encrypted, must provide passphrase.	-----BEGIN PRIVATE KEY-----\nMIIE... or -----BEGIN ENCRYPTED PRIVATE KEY-----\n...
+9	sapsf-oauth-passphrase	sapsfbatch-sit-auth-oauth-passphrase	Passphrase to decrypt the encrypted private key. Leave empty if private key is unencrypted.	MyP@ssphrase123! or empty
+10	sapsf-oauth-certificate	sapsfbatch-sit-auth-oauth-certificate	Public X.509 certificate from SAP SF (full PEM format). Used with private key for SAML assertion signing.	-----BEGIN CERTIFICATE-----\nMIID...
+11	sapsf-oauth-user-name	sapsfbatch-sit-auth-oauth-username	OAuth2 Technical User Name (optional, some SAP SF implementations require this)	svc_oauth_integration
+12	sapsf-oauth-token-url	sapsfbatch-sit-auth-oauth-tokenurl	OAuth2 token endpoint URL for SAP SuccessFactors	https://apisalesdemo2.successfactors.com/oauth/token
+Environment Variables (Not in Key Vault)
+These are configured directly in Azure App Service Configuration:
+
+#	Variable Name	Description	Example Value
+1	AZURE_KEYVAULT_ENDPOINT	Azure Key Vault endpoint URI for SIT environment	https://kv-sapsf-batch-sit.vault.azure.net/
+2	APPLICATIONINSIGHTS_CONNECTION_STRING	Application Insights connection string for monitoring	InstrumentationKey=12345678-abcd-ef12-3456-789012345678;IngestionEndpoint=https://...
+3	SPRING_PROFILES_ACTIVE	Active Spring profile(s)	sit
+Optional Key Vault Secrets
+These have default values but can be overridden in Key Vault if needed:
+
+#	Variable Name	Key Vault Secret Name	Description	Default Value
+1	sapsf-odata-path-prefix	sapsfbatch-sit-sapsf-odataprefix	OData API path prefix to prepend to all requests	/odata/v2
+2	sapsf-allow-modifications	sapsfbatch-sit-config-allowmodifications	Allow POST/PUT/PATCH/DELETE operations (true/false)	true (for SIT testing)

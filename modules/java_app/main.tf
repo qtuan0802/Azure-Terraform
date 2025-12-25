@@ -68,7 +68,10 @@ resource "azurerm_linux_web_app" "main" {
     "APPLICATIONINSIGHTS_CONNECTION_STRING" = var.enable_app_insights ? azurerm_application_insights.main[0].connection_string : "",
     "KEY_VAULT_URL"                         = data.azurerm_key_vault.shared.vault_uri
     }, var.additional_app_settings,
-    { for k, v in var.key_vault_references : k => "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.shared.name};SecretName=${v})" }
+    var.user_assigned_identity_client_id != null && var.user_assigned_identity_client_id != "" ?
+      { for k, v in var.key_vault_references : k => "@Microsoft.KeyVault(SecretUri=https://${data.azurerm_key_vault.shared.name}.vault.azure.net/secrets/${v};Identity=${var.user_assigned_identity_client_id})" }
+      :
+      { for k, v in var.key_vault_references : k => "@Microsoft.KeyVault(SecretUri=https://${data.azurerm_key_vault.shared.name}.vault.azure.net/secrets/${v})" }
   )
 
   https_only = true

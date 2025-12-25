@@ -81,7 +81,9 @@ module "key_vault_sapsfbatch" {
   # Access policies
   access_policies = var.key_vault_access_policies
 
-  tags = var.tags
+  tags               = var.tags
+  sapsfbatch_secrets = var.sapsfbatch_secrets
+  expiration_hours   = var.expiration_hours
 }
 
 # Storage Account for OneLake integration

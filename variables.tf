@@ -198,8 +198,21 @@ variable "key_vault_references" {
   default     = {}
 }
 
+variable "expiration_hours" {
+  description = "Number of hours after which the Key Vault secrets will expire"
+  type        = number
+  default     = null
+}
+
 variable "sample_secrets" {
   description = "Sample secrets to create in Key Vault"
+  type        = map(string)
+  default     = {}
+}
+
+# Sapsfbatch Key Vault Secrets (required + optional, see key_vault.txt)
+variable "sapsfbatch_secrets" {
+  description = "Secrets for sapsfbatch Key Vault (required + optional, see key_vault.txt)"
   type        = map(string)
   default     = {}
 }

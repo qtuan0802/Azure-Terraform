@@ -1,3 +1,8 @@
+variable "expiration_hours" {
+  description = "Số giờ kể từ thời điểm tạo để secret hết hạn (ví dụ: 2160 cho 90 ngày)"
+  type        = number
+  default     = 2160
+}
 variable "name" {
   description = "Name of the Key Vault"
   type        = string
@@ -117,6 +122,13 @@ variable "enable_private_endpoint" {
   description = "Enable private endpoint for Key Vault"
   type        = bool
   default     = false
+}
+
+# Sapsfbatch Key Vault Secrets (required + optional)
+variable "sapsfbatch_secrets" {
+  description = "Secrets for sapsfbatch Key Vault (required + optional, see key_vault.txt)"
+  type        = map(string)
+  default     = {}
 }
 
 variable "private_endpoint_subnet_id" {
